@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>短链接重定向</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+<label>点击跳转至链接：</label>
+<a id="redirectLink" href="#" onclick="redirectToTarget(event)"></a>
+
+<script>
+    $(document).ready(function() {
+        var redirectLink = $('#redirectLink');
+        var endpointURL = '/getShortUrl'; // 后端接口的URL
+
+        // 发起Ajax请求
+        $.ajax({
+            url: endpointURL,
+            method: 'GET',
+            success: function(response) {
+                var shortLink = response.shortLink; // 假设后端接口返回一个包含短链接的JSON对象
+                redirectLink.attr('href', shortLink); // 设置链接元素的href属性为短链接
+                redirectLink.text(shortLink); // 设置链接文本内容为短链接
+            },
+            error: function(error) {
+                console.error('发生错误：', error);
+            }
+        });
+    });
+
+    function redirectToTarget(event) {
+        event.preventDefault(); // 阻止默认的链接跳转行为
+
+        var currentUrl = $('#redirectLink').attr("href");
+        console.log(currentUrl);
+        // 向后端发送请求获取对应的长链接
+        fetch('/api/redirect?url=' + encodeURIComponent(currentUrl))
+            .then(function(response) {
+                return response.json();
+            })
+            .then(function(data) {
+                var longUrl = data.longUrl;
+                if (longUrl) {
+                    window.location.href = longUrl; // 重定向到长链接
+                } else {
+                    // 处理无效短链接的情况
+                    alert('无效的短链接');
+                }
+            })
+            .catch(function(error) {
+                console.error('发生错误：', error);
+            });
+    }
+</script>
+</body>
+</html>
