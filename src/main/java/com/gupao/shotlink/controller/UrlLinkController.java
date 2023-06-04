@@ -45,6 +45,9 @@ public class UrlLinkController {
                 longUrl = urlMapping.getOriginalUrl();
             }
         }
+        //记录访问次数
+        mapper.updateRecord(shortUrl);
+
         response.setHeader("Prama","No-cache");
         response.setHeader("Cache-Control","no-cache");
         response.setHeader("refresh","0;URL="+longUrl);
