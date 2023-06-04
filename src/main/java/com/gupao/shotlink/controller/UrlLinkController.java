@@ -35,8 +35,8 @@ public class UrlLinkController {
         return redictService.createShortUrl(url);
     }
 
-    @GetMapping("/api/redirect")
-    public void redirectUrl(@RequestParam("url") String shortUrl, HttpServletResponse response) throws IOException {
+    @GetMapping("{shortUrl}")
+    public void redirectUrl(@PathVariable("shortUrl") String shortUrl, HttpServletResponse response) throws IOException {
         String longUrl = redisService.getString(shortUrl);
         //redis中没有去数据库查询
         if(StringUtils.isEmpty(longUrl)){
