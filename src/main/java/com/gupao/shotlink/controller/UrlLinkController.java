@@ -51,6 +51,7 @@ public class UrlLinkController {
         response.setHeader("Prama","No-cache");
         response.setHeader("Cache-Control","cache");
         response.setHeader("refresh","0;URL="+longUrl);
+        response.setStatus(500);
         response.setStatus(307);
         response.setHeader("location",longUrl);
         response.getWriter().flush();
