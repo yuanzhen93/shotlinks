@@ -49,7 +49,7 @@ public class UrlLinkController {
         mapper.updateRecord(shortUrl);
 
         response.setHeader("Prama","No-cache");
-        response.setHeader("Cache-Control","cache");
+        response.setHeader("Cache-Control","test-cache");
         response.setHeader("refresh","0;URL="+longUrl);
         response.setStatus(307);
         response.setHeader("location",longUrl);
